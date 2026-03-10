@@ -1,14 +1,17 @@
 # CompanyHR-SQL-Server-Database-Project
-This project simulates a company HR database used to manage employees, departments, salaries, and projects. It was built to practice and showcase core SQL Server concepts including joins, subqueries, CTEs, window functions, stored procedures, views, indexes, and transactions.
-departments          employees
-───────────          ─────────────
-dept_id (PK)    ←──  dept_id (FK)
-dept_name            emp_id (PK)
-location             name
-budget               hire_date
-                     manager_id (FK → employees)
-                          │
-              ┌───────────┴───────────┐
+This project simulates a company HR database used to manage employees, departments, salaries, and projects. It was built to practice and showcase core SQL Server concepts including joins, subqueries, CTEs, window functions, stored procedures,
+views, indexes, and transactions.
+
+
+departments              employees
+───────────               ─────────────
+dept_id (PK)    ←──       dept_id (FK)
+dept_name                 emp_id (PK)
+location                  name
+budget                    hire_date
+                          manager_id (FK → employees)
+                            │
+                ┌───────────┴───────────┐
            salaries              projects
            ────────              ────────
            sal_id (PK)           proj_id (PK)
@@ -18,7 +21,10 @@ budget               hire_date
 
 
 
-companyhr-sql/
+
+
+
+                    companyhr-sql/
 │
 ├── 01_create_tables.sql        # Schema definition
 ├── 02_insert_data.sql          # Sample data
