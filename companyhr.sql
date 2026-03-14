@@ -1,14 +1,9 @@
-﻿-- ============================================================
---         SQL MASTERY PRACTICE SCRIPT
+﻿
 --         Database: Company HR System
 --         Run this in SQL Server Management Studio (SSMS)
---         TIP: Highlight any section and press F5 to run it
--- ============================================================
 
 
--- ============================================================
--- SECTION 0 — SETUP: Create & select the database
--- ============================================================
+---SETUP: Create & select the database
 
 -- Create a fresh database (skip if already exists)
 ---SYS.DATABASE=This is a system table that SQL Server maintains automatically.
@@ -23,11 +18,9 @@ USE CompanyHR;
 GO
 
 
--- ============================================================
 -- SECTION 1 — CREATE TABLES
 -- Concepts: PRIMARY KEY, FOREIGN KEY, NOT NULL, DEFAULT,
 --           UNIQUE, CHECK, IDENTITY, self-referencing FK
--- ============================================================
 
 -- Drop tables in reverse order (child before parent)
 -- so we can re-run this script cleanly
@@ -76,9 +69,7 @@ CREATE TABLE projects (
 GO
 
 
--- ============================================================
 -- SECTION 2 — INSERT SAMPLE DATA
--- ============================================================
 
 -- Departments first (no dependencies)
 INSERT INTO departments (dept_name, location, budget) VALUES
@@ -120,10 +111,8 @@ INSERT INTO projects (emp_id, project_name, status) VALUES
 GO
 
 
--- ============================================================
 -- SECTION 3 — BASIC SELECT
 -- Concepts: *, column alias, computed columns, DISTINCT, TOP
--- ============================================================
 
 -- All columns from a table
 SELECT * FROM employees;
@@ -148,10 +137,8 @@ SELECT DISTINCT dept_id FROM employees;  -- how many unique departments are staf
 SELECT TOP 3 * FROM salaries ORDER BY amount DESC;  -- 3 highest paid
 
 
--- ============================================================
 -- SECTION 4 — WHERE CLAUSE (filtering rows)
 -- Concepts: =, >, BETWEEN, LIKE, IN, IS NULL, AND, OR
--- ============================================================
 
 -- Exact match
 SELECT * FROM employees WHERE dept_id = 1;
@@ -182,15 +169,13 @@ WHERE dept_id = 1
   AND hire_date > '2019-12-31';   -- Engineering hired after 2019
 
 
--- ============================================================
 -- SECTION 5 — AGGREGATE FUNCTIONS + GROUP BY + HAVING
 -- Concepts: COUNT, SUM, AVG, MAX, MIN, GROUP BY, HAVING
--- ============================================================
 
 -- Basic aggregates across ALL rows
 SELECT
     COUNT(*)        AS total_rows,
-    COUNT(emp_id)   AS rows_with_employee,  -- ✅ emp_id exists in salaries
+    COUNT(emp_id)   AS rows_with_employee,  --  emp_id exists in salaries
     SUM(amount)     AS total_payroll,
     AVG(amount)     AS average_salary,
     MAX(amount)     AS highest_salary,
@@ -200,7 +185,7 @@ FROM salaries;
 SELECT
     e.dept_id,
     COUNT(e.emp_id)  AS headcount,
-    AVG(s.amount)    AS avg_salary    -- ✅ now amount is available
+    AVG(s.amount)    AS avg_salary    --  now amount is available
 FROM employees e
 JOIN salaries s ON e.emp_id = s.emp_id  -- brings amount into the query
 GROUP BY e.dept_id
@@ -239,10 +224,8 @@ GROUP BY dept_id
 HAVING COUNT(emp_id) > 1;   -- only departments with more than 1 employee
 
 
--- ============================================================
 -- SECTION 6 — JOINS
 -- Concepts: INNER, LEFT, RIGHT, FULL OUTER, SELF, CROSS
--- ============================================================
 
 -- ── INNER JOIN ───────────────────────────────────────────────
 -- Returns ONLY rows that have a match in BOTH tables
@@ -319,12 +302,10 @@ FROM employees e
 CROSS JOIN departments d;
 
 
--- ============================================================
 -- SECTION 7 — SUBQUERIES
 -- Concepts: subquery in WHERE, FROM (derived table),
 --           correlated subquery, EXISTS vs IN A .Subquery is simply a SELECT statement
 --written inside another SELECT statement. It runs first, produces a result, and the outer query uses that result
--- ============================================================
 
 -- ── SUBQUERY IN WHERE ────────────────────────────────────────
 -- Find employees whose salary is above average
@@ -386,10 +367,9 @@ WHERE NOT EXISTS (
 );
 
 
--- ============================================================
 -- SECTION 8 — CTEs (Common Table Expressions)
 -- Concepts: basic CTE, multiple CTEs, recursive CTE
--- ============================================================
+-- 
 
 -- ── BASIC CTE ────────────────────────────────────────────────
 -- WITH defines a named temporary result — cleaner than subqueries
@@ -469,11 +449,10 @@ ORDER BY level, name;
 ---Level 2 → 'Alice Johnson → Bob Smith → Someone'      (39 chars)
 
 
--- ============================================================
+
 -- SECTION 9 — WINDOW FUNCTIONS
 -- Concepts: ROW_NUMBER, RANK, DENSE_RANK, PARTITION BY,
 --           LAG, LEAD, running totals
--- ============================================================
 
 -- ── ROW_NUMBER, RANK, DENSE_RANK ─────────────────────────────
 -- OVER() defines the "window" — which rows to look at
@@ -542,9 +521,7 @@ FROM employees e
 JOIN salaries  s ON e.emp_id = s.emp_id;
 
 
--- ============================================================
 -- SECTION 10 — UPDATE & DELETE
--- ============================================================
 
 -- UPDATE: modify existing rows
 -- ALWAYS use WHERE — without it you update EVERY row!
@@ -568,11 +545,10 @@ WHERE status = 'completed';    -- remove completed projects
 -- TRUNCATE TABLE projects;    -- commented out — just for reference
 
 
--- ============================================================
+
 -- SECTION 11 — STORED PROCEDURES
 -- Concepts: CREATE PROCEDURE, parameters, OUTPUT params,
 --           EXEC, error handling
--- ============================================================
 
 -- Drop if exists so we can recreate cleanly
 IF OBJECT_ID('GetEmployeesByDept', 'P') IS NOT NULL
@@ -669,9 +645,7 @@ EXEC GiveRaise @emp_id = 99, @raise_pct = 10;  -- emp 99 doesn't exist → error
 GO
 
 
--- ============================================================
 -- SECTION 12 — USER DEFINED FUNCTIONS (UDF)
--- ============================================================
 
 IF OBJECT_ID('dbo.GetYearsEmployed', 'FN') IS NOT NULL
     DROP FUNCTION dbo.GetYearsEmployed;
@@ -791,9 +765,7 @@ BEGIN CATCH
 END CATCH;
 
 
--- ============================================================
 -- SECTION 16 — STRING & DATE FUNCTIONS (BONUS)
--- ============================================================
 
 SELECT
     -- String functions
@@ -820,9 +792,7 @@ SELECT
 FROM employees;
 
 
--- ============================================================
 -- SECTION 17 — CASE EXPRESSION (conditional logic in SQL)
--- ============================================================
 
 -- CASE is SQL's IF-THEN-ELSE
 SELECT
@@ -846,10 +816,9 @@ FROM employees e
 JOIN salaries  s ON e.emp_id = s.emp_id;
 
 
--- ============================================================
 -- SECTION 18 — INTERVIEW PRACTICE QUERIES
 -- Try to write these yourself before looking at the solution!
--- ============================================================
+
 
 -- Q1: List all employees and their salary, sorted highest to lowest
 SELECT e.name, s.amount
@@ -913,7 +882,4 @@ SELECT name, hire_date
 FROM employees
 WHERE hire_date >= DATEADD(YEAR, -3, GETDATE());
 
--- ============================================================
 --  END OF SCRIPT
---  Next step: build a real project using these concepts!
--- ============================================================
