@@ -25,7 +25,7 @@ budget                    hire_date
 
 
                     companyhr-sql/
-│
+
 ├── 01_create_tables.sql        # Schema definition
 ├── 02_insert_data.sql          # Sample data
 ├── 03_select_queries.sql       # Basic SELECT, WHERE, ORDER BY
